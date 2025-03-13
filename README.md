@@ -9,7 +9,7 @@ In the triton samples the rate of fluorescence decay should represent the reacti
 In the untreated samples the rate of fluorescence decay depends on both the reaction rate, and the rate of permeation of dithionite into the vesicles.
 
 # Data
-*Data is stored in excel spreadsheets.\
-*Time is in the first column.\
-*Natural log calculations were included following the fluorescence data for manual graphing.\
-*Sheets names include concentrations.
+-Data is stored in excel spreadsheets.
+-Time is in the first column.
+-Natural log calculations were included following the fluorescence data for manual graphing.
+-Sheets names include concentrations.

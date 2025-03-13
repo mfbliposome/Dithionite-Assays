@@ -12,4 +12,4 @@ In the untreated samples the rate of fluorescence decay depends on both the reac
 Data is stored in excel spreadsheets.\
 Time is in the first column.\
 Natural log calculations were included following the fluorescence data for manual graphing.\
-Sheets names include concentrations.\
+Sheets names include concentrations.

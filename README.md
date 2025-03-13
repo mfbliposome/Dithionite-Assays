@@ -1,6 +1,6 @@
 # Dithionite-Assays
 
-Dithionite assays were performed to model membrane permeability lipid membranes.
+Dithionite assays were performed to model the membrane permeability of lipid membranes.
 Lipid vesicles were prepared from various fatty acids and phospholipids with the fluorophore - NBD - tagged phospholipid DOPE at constant concentration 6 uM.
 The lipid bilayer contains approximately half of the NBD inside of the bilayer and half outside since the tag is on the headgroup.
 Triton was added to half the samples in order to disrupt the bilayer and micellize the vesicles exposing 100% of the NBD to the buffer solution.

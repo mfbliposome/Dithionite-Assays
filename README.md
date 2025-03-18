@@ -12,7 +12,7 @@ In the untreated samples the rate of fluorescence decay depends on both the reac
 Data is stored in csv.\
 Time is the first column.\
 Natural log calculations and gwere included following the fluorescence data for manual graphing.\
-CSV name includes concentration.\
+CSV name includes concentration.
 * `sample_25.csv`:  Needs the concentration
 
 # Results

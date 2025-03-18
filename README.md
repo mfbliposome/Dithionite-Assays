@@ -17,4 +17,4 @@ CSV name includes concentration.
 
 # Results
 Processed data is stored in excel workbooks.\
-Natural log calculations were included following the fluorescence data for manual graphing.\
+Natural log calculations were included following the fluorescence data for manual graphing.

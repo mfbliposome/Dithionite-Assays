@@ -25,9 +25,14 @@ In 'notebooks' folder, it contains some example code of modeling data
 
 Basic usage:
 ```
+# Read data file
 file_path2 = '../../data/33_mM_Decanoic.csv'
+
+# Preprocess data
 df_preprocess, filename = preprocess_data(file_path2)
 data = df_preprocess
+
+# Analysis and modeling
 results21 = analyze_fluorescence_decay_triton(data, filename, time_range=60)
 results21;
 results22 = analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.001, 0.005])
@@ -43,3 +48,19 @@ Natural log calculations were included following the fluorescence data for manua
 
 #### Auto results
 The modeling results are stored in separate folder, which the folder name indicate the dataset used and the creation time. e.g. 0.16_mM_DOPC_20250409-17:55
+
+## Requirements for libraries
+- numpy
+- scipy
+- pandas
+- matplotlib
+
+
+## Citation
+
+If you use this repository in your research, please cite it as follows: 
+TBD
+
+## License
+
+This project is licensed under the [BSD 3-Clause License](LICENSE). Please cite this repository if you use it in your work.

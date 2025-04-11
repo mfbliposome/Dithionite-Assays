@@ -8,13 +8,36 @@ Dithionite was added to the samples immediately before fluorescence spectroscopy
 In the triton samples the rate of fluorescence decay should represent the reaction rate.
 In the untreated samples the rate of fluorescence decay depends on both the reaction rate, and the rate of permeation of dithionite into the vesicles.
 
-# Data
+## Folder structure
+In this repo, it has 3 subfolders: 'data', 'code', and 'results'.
+
+### data
 Data is stored in csv.\
 Time is the first column.\
 Natural log calculations and gwere included following the fluorescence data for manual graphing.\
 CSV name includes concentration.
 * `sample_25.csv`:  Needs the concentration
 
-# Results
+### code
+This folder has 2 subfolders: 'src', 'notebooks'.
+In 'src' folder, it include the main functions for modeling, plotting, and storing results
+In 'notebooks' folder, it contains some example code of modeling data
+e.g.
+`
+file_path2 = '../../data/33_mM_Decanoic.csv'
+df_preprocess, filename = preprocess_data(file_path2)
+data = df_preprocess
+results21 = analyze_fluorescence_decay_triton(data, filename, time_range=60)
+results21;
+results22 = analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.001, 0.005])
+results22;
+results23 = analyze_fluorescence_decay_no_triton_numerical(data, filename)
+results23;`
+
+### results
+#### Manual results
 Processed data is stored in excel workbooks.\
 Natural log calculations were included following the fluorescence data for manual graphing.
+
+#### Auto results
+The modeling results are stored in separate folder, which the folder name indicate the dataset used and the creation time. e.g. 0.16_mM_DOPC_20250409-17:55

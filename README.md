@@ -22,8 +22,9 @@ CSV name includes concentration.
 This folder has 2 subfolders: 'src', 'notebooks'.
 In 'src' folder, it include the main functions for modeling, plotting, and storing results
 In 'notebooks' folder, it contains some example code of modeling data
-e.g.
-`
+
+Basic usage:
+```
 file_path2 = '../../data/33_mM_Decanoic.csv'
 df_preprocess, filename = preprocess_data(file_path2)
 data = df_preprocess
@@ -32,7 +33,8 @@ results21;
 results22 = analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.001, 0.005])
 results22;
 results23 = analyze_fluorescence_decay_no_triton_numerical(data, filename)
-results23;`
+results23;
+```
 
 ### results
 #### Manual results

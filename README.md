@@ -54,6 +54,7 @@ The modeling results are stored in separate folder, which the folder name indica
 - scipy
 - pandas
 - matplotlib
+- scikit-learn
 
 
 ## Citation

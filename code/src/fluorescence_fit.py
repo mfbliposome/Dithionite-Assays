@@ -31,6 +31,38 @@ def preprocess_data(file_path):
 
     return df_filtered, filename_stem
 
+def preprocess_data_auto(file_path, sheet_name):
+    '''
+    Preprocess the data file generated from auto plate and make it ready for analysis.
+
+    Parameters
+    ----------
+    file_path : str
+        The input file path.
+
+    sheet_name : str
+        The sheet name in the file that need to be analyzed.
+
+
+    Returns
+    -------
+    df_clean : pandas.DataFrame
+        A DataFrame that have clean format that is ready for analysis.
+    
+    filename_stem: str
+        base file name of the input file.
+    '''
+    # Read the Excel file, skipping metadata rows
+    df = pd.read_excel(file_path, sheet_name=sheet_name, skiprows=9)
+    filename_stem = os.path.splitext(os.path.basename(file_path))[0]
+
+    # Drop rows where the first column is NaN or non-numeric
+    df_clean = df[pd.to_numeric(df.iloc[:, 0], errors='coerce').notna()].reset_index(drop=True)
+    df_clean = df_clean.iloc[:, 1:-1]
+    df_clean = df_clean.loc[:, ~df_clean.columns.str.contains("Blank")]
+
+    return df_clean, filename_stem
+
 
 def analyze_fluorescence_decay_triton(data, filename, time_range=60):
     '''
@@ -178,7 +210,7 @@ def analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.00
         DataFrame containing fitted parameters, R², and RMSE for each trial.
     """
 
-    t = data['time'].values
+    t = data.iloc[:, 0].values
     columns = data.columns[1:4]
     colors = ['blue', 'orange', 'green']
     results = []
@@ -300,6 +332,13 @@ def analyze_fluorescence_decay_no_triton_numerical(data, filename):
             return [dF_out_dt, dF_in_dt]
         
         sol = solve_ivp(odes, [t[0], t[-1]], [F_out0, F_in0], t_eval=t, method='RK45')
+        # print("ODE solution shape:", sol.y.shape)
+
+        if not sol.success:
+            raise RuntimeError(f"ODE solver failed: {sol.message}")
+        if sol.y.shape[1] != len(t):
+            raise ValueError(f"ODE result length mismatch: expected {len(t)}, got {sol.y.shape[1]}")
+        
         return sol.y[0] + sol.y[1]
 
     def fit_function(t, F_out0, F_in0, k_deg_out, k_deg_in, k_perm):
@@ -318,9 +357,17 @@ def analyze_fluorescence_decay_no_triton_numerical(data, filename):
 
     for i, fluorescence in enumerate(fluorescence_trials):
         initial_guess = [fluorescence[0] * 0.5, fluorescence[0] * 0.5, 0.01, 0.01, 0.001]
+        # initial_guess = [fluorescence[0]*0.5, fluorescence[0]*0.5, 0.01, 0.01, 0.001]
 
         try:
-            popt, _ = curve_fit(fit_function, time, fluorescence, p0=initial_guess, maxfev=10000)
+            # print(fluorescence.shape)
+            # print(time.shape)
+            # Set bounds is important for success fitting!
+            bounds = (
+            [0, 0, 0, 0, 0],    # lower bounds
+            [np.inf, np.inf, 10, 10, 10]  # upper bounds
+)
+            popt, _ = curve_fit(fit_function, time, fluorescence, p0=initial_guess, maxfev=10000, bounds=bounds)
             F_fit = fit_function(time, *popt)
 
             # Calculate stats
@@ -331,8 +378,6 @@ def analyze_fluorescence_decay_no_triton_numerical(data, filename):
             params_list.append((f"Trial_{i+1}", *popt, r2, rmse))
             fit_curves.append(F_fit)
             residuals_list.append(residuals)
-
-           
 
         except RuntimeError:
             print(f"Fit failed for Trial {i+1}")

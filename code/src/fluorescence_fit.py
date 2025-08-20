@@ -88,6 +88,9 @@ def analyze_fluorescence_decay_triton(data, filename, time_range=60, os_system='
     time_range : int, optional
         Number of time steps used for fitting (default is 60).
 
+    os_system : str
+        Operating system you are using.
+
     Returns
     -------
     param_df : pandas.DataFrame
@@ -206,6 +209,9 @@ def analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.00
 
     filename : str
         Base filename for saving plot and CSV outputs (no extension).
+    
+    os_system : str
+        Operating system you are using.
 
     Returns
     -------
@@ -317,6 +323,9 @@ def analyze_fluorescence_decay_no_triton_numerical(data, filename, os_system='Ma
     ----------
     data : pandas.DataFrame
         DataFrame with time in the first column and at least three fluorescence trials.
+    
+    os_system : str
+        Operating system you are using.
 
     Returns
     -------

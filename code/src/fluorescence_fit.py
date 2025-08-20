@@ -108,7 +108,7 @@ def analyze_fluorescence_decay_triton(data, filename, time_range=60, os_system='
         return ln_F0 - k_deg * t
     
     # Create results directory
-    timestamp = datetime.now().strftime('%Y%m%d-%H:%M')
+    timestamp = datetime.now().strftime('%Y%m%d-%H')
     if os_system == 'Mac':
         results_dir = f'../../results/{filename}_{timestamp}'
     elif os_system == 'Windows':
@@ -224,7 +224,7 @@ def analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.00
         return C1 * term_out + C2 * term_in
     
     # Create results directory
-    timestamp = datetime.now().strftime('%Y%m%d-%H:%M')
+    timestamp = datetime.now().strftime('%Y%m%d-%H')
     if os_system == 'Mac':
         results_dir = f'../../results/{filename}_{timestamp}'
     elif os_system == 'Windows':
@@ -351,7 +351,7 @@ def analyze_fluorescence_decay_no_triton_numerical(data, filename, os_system='Ma
         return fluorescence_model(t, F_out0, F_in0, k_deg_out, k_deg_in, k_perm)
 
     # Create results directory
-    timestamp = datetime.now().strftime('%Y%m%d-%H:%M')
+    timestamp = datetime.now().strftime('%Y%m%d-%H')
     if os_system == 'Mac':
         results_dir = f'../../results/{filename}_{timestamp}'
     elif os_system == 'Windows':

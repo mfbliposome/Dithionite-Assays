@@ -64,7 +64,7 @@ def preprocess_data_auto(file_path, sheet_name):
     return df_clean, filename_stem
 
 
-def analyze_fluorescence_decay_triton(data, filename, time_range=60):
+def analyze_fluorescence_decay_triton(data, filename, time_range=60, os_system='Mac'):
     '''
     Analyze fluorescence decay following Triton treatment using a linearized 
     exponential decay model and save the fitted parameters and plots.
@@ -109,7 +109,10 @@ def analyze_fluorescence_decay_triton(data, filename, time_range=60):
     
     # Create results directory
     timestamp = datetime.now().strftime('%Y%m%d-%H:%M')
-    results_dir = f'../../results/{filename}_{timestamp}'
+    if os_system == 'Mac':
+        results_dir = f'../../results/{filename}_{timestamp}'
+    elif os_system == 'Windows':
+        results_dir = os.path.join("..", "..", "results", f"{filename}_{timestamp}")
     os.makedirs(results_dir, exist_ok=True)
 
     # Initialize plot for fit
@@ -188,7 +191,7 @@ def analyze_fluorescence_decay_triton(data, filename, time_range=60):
     print(f"Saved: {residual_plot_filename}")
     return param_df
 
-def analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.001, 0.005]):
+def analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.001, 0.005], os_system='Mac'):
     """
     Fit fluorescence decay curves (no Triton) using a composite exponential model 
     and save fit results, plots, and statistics.
@@ -222,7 +225,10 @@ def analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.00
     
     # Create results directory
     timestamp = datetime.now().strftime('%Y%m%d-%H:%M')
-    results_dir = f'../../results/{filename}_{timestamp}'
+    if os_system == 'Mac':
+        results_dir = f'../../results/{filename}_{timestamp}'
+    elif os_system == 'Windows':
+        results_dir = os.path.join("..", "..", "results", f"{filename}_{timestamp}")
     os.makedirs(results_dir, exist_ok=True)
 
     # --- Fit Plot ---
@@ -302,7 +308,7 @@ def analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.00
     return param_df
 
 
-def analyze_fluorescence_decay_no_triton_numerical(data, filename):
+def analyze_fluorescence_decay_no_triton_numerical(data, filename, os_system='Mac'):
     """
     Analyze fluorescence decay data using numerical solution.
     Saves fit plots and parameters (including R² and RMSE) to a timestamped results folder.
@@ -346,7 +352,11 @@ def analyze_fluorescence_decay_no_triton_numerical(data, filename):
 
     # Create results directory
     timestamp = datetime.now().strftime('%Y%m%d-%H:%M')
-    results_dir = f'../../results/{filename}_{timestamp}'
+    if os_system == 'Mac':
+        results_dir = f'../../results/{filename}_{timestamp}'
+    elif os_system == 'Windows':
+        results_dir = os.path.join("..", "..", "results", f"{filename}_{timestamp}")
+    # results_dir = f'../../results/{filename}_{timestamp}'
     os.makedirs(results_dir, exist_ok=True)
 
     # Fit and plot

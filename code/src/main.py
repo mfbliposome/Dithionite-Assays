@@ -50,7 +50,6 @@ def run_fluorescence_analysis(
         filename,
         k_deg_out_fixed=k_deg_out,
         base_results_dir= results_folder,
-        p0=p0_no_triton
     )
     
     # No Triton: numerical
@@ -82,3 +81,55 @@ def run_fluorescence_analysis(
 #     file_path,
 #     results_folder='../../results/my_analysis_folder'
 # )
+
+def run_fluorescence_analysis_cuvette(
+    file_path,  
+    results_folder='../../results/20251002',
+    time_range =10,
+    ub3 = 10,
+    ub4 = 10,
+    ub = [np.inf, np.inf, 10, 10, 10]):
+
+    os.makedirs(results_folder, exist_ok=True)
+    
+    # Preprocess
+    df_preprocess, filename = preprocess_data(file_path)    
+    # Triton analysis
+    results_triton = analyze_fluorescence_decay_triton(df_preprocess, filename, base_results_dir= results_folder, time_range=time_range)
+    
+    # Fixed k_deg_out for No-Triton analyses
+    k_deg_out = results_triton['k_deg'].mean()
+    
+    # No Triton: analytical
+    results_no_triton_fixed = analyze_fluorescence_decay_no_triton_fixed_kout(
+        df_preprocess,
+        filename,
+        k_deg_out_fixed=k_deg_out,
+        base_results_dir= results_folder,
+        ub3=ub3,
+        ub4=ub4
+    )
+    
+    # No Triton: numerical
+    results_no_triton_numerical = analyze_fluorescence_decay_no_triton_numerical_fixed_kout(
+        df_preprocess,
+        filename,
+        k_deg_out_fixed=k_deg_out,
+        base_results_dir= results_folder,
+        ub=ub
+    )
+    
+    # Store results
+    result_dict = {
+        'df_clean': df_preprocess,
+        'results_triton': results_triton,
+        'results_no_triton_fixed': results_no_triton_fixed,
+        'results_no_triton_numerical': results_no_triton_numerical
+    }
+    
+    # Save using joblib
+    save_path = os.path.join(results_folder, f"{filename}_results.joblib")
+    joblib.dump(result_dict, save_path)
+    
+    print(f"All results saved to {save_path}")
+    return result_dict

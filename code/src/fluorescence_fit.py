@@ -198,7 +198,7 @@ def analyze_fluorescence_decay_triton(data, filename, base_results_dir, time_ran
     print(f"Saved: {residual_plot_filename}")
     return param_df
 
-def analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.001, 0.005], os_system='Mac'):
+def analyze_fluorescence_decay_no_triton(data, filename, os_system='Mac'):
     """
     Fit fluorescence decay curves (no Triton) using a composite exponential model 
     and save fit results, plots, and statistics.
@@ -252,6 +252,7 @@ def analyze_fluorescence_decay_no_triton(data, filename, p0 =[25, 25, 0.01, 0.00
         # Update bounds based on F0
         lb = [0, 0, 1e-10, 1e-10, 1e-10]
         ub = [F0_guess, F0_guess, 10.0, 10.0, 10.0]
+        p0 = [F0_guess, F0_guess, 0.001, 0.001]
 
         try:
             popt, _ = curve_fit(F_total, t, F, p0=p0, bounds=(lb, ub), maxfev=50000)
@@ -321,8 +322,9 @@ def analyze_fluorescence_decay_no_triton_fixed_kout(
     data, 
     filename, 
     k_deg_out_fixed,   
-    base_results_dir,
-    p0=[25, 25, 0.001, 0.005],  
+    base_results_dir, 
+    ub3 = 10,
+    ub4 = 10,
     os_system='Mac'):
 
     """
@@ -382,7 +384,9 @@ def analyze_fluorescence_decay_no_triton_fixed_kout(
         
         # Bounds (4 free params only)
         lb = [0, 0, 1e-10, 1e-10]
-        ub = [F0_guess, F0_guess, 10.0, 10.0]
+        ub = [F0_guess, F0_guess, ub3, ub4]
+        p0 = [F0_guess, F0_guess, 0.001, 0.001]
+        
 
         try:
             popt, _ = curve_fit(F_total_fixed, t, F, p0=p0, bounds=(lb, ub), maxfev=50000)
@@ -450,7 +454,7 @@ def analyze_fluorescence_decay_no_triton_fixed_kout(
     return param_df
 
 
-def analyze_fluorescence_decay_no_triton_numerical(data, filename, os_system='Mac'):
+def analyze_fluorescence_decay_no_triton_numerical(data, filename, ub=[np.inf, np.inf, 10, 10, 10], os_system='Mac'):
     """
     Analyze fluorescence decay data using numerical solution.
     Saves fit plots and parameters (including R² and RMSE) to a timestamped results folder.
@@ -513,7 +517,7 @@ def analyze_fluorescence_decay_no_triton_numerical(data, filename, os_system='Ma
     colors = plt.cm.tab10.colors
 
     for i, fluorescence in enumerate(fluorescence_trials):
-        initial_guess = [fluorescence[0] * 0.5, fluorescence[0] * 0.5, 0.01, 0.01, 0.001]
+        initial_guess = [fluorescence[0] * 0.5, fluorescence[0] * 0.5, 0.01, 0.001, 0.001]
         # initial_guess = [fluorescence[0]*0.5, fluorescence[0]*0.5, 0.01, 0.01, 0.001]
 
         try:
@@ -522,8 +526,9 @@ def analyze_fluorescence_decay_no_triton_numerical(data, filename, os_system='Ma
             # Set bounds is important for success fitting!
             bounds = (
             [0, 0, 0, 0, 0],    # lower bounds
-            [np.inf, np.inf, 10, 10, 10]  # upper bounds
-)
+            ub)  # upper bounds
+            # [np.inf, np.inf, 10, 10, 10]
+
             popt, _ = curve_fit(fit_function, time, fluorescence, p0=initial_guess, maxfev=10000, bounds=bounds)
             F_fit = fit_function(time, *popt)
 
@@ -585,7 +590,7 @@ def analyze_fluorescence_decay_no_triton_numerical(data, filename, os_system='Ma
     print(f"Results saved to {results_dir}")
     return param_df
 
-def analyze_fluorescence_decay_no_triton_numerical_fixed_kout(data, filename, k_deg_out_fixed, base_results_dir, os_system='Mac'):
+def analyze_fluorescence_decay_no_triton_numerical_fixed_kout(data, filename, k_deg_out_fixed, base_results_dir, ub = [np.inf, np.inf, 10, 10], os_system='Mac'):
     """
     Analyze fluorescence decay data using numerical solution.
     Saves fit plots and parameters (including R² and RMSE) to a timestamped results folder.
@@ -651,13 +656,13 @@ def analyze_fluorescence_decay_no_triton_numerical_fixed_kout(data, filename, k_
     for i, fluorescence in enumerate(fluorescence_trials):
     # for i, fluorescence in enumerate(columns):
 
-        initial_guess = [fluorescence[0] * 0.5, fluorescence[0] * 0.5, 0.01, 0.001]
+        initial_guess = [fluorescence[0] * 0.5, fluorescence[0] * 0.5, 0.001, 0.001]
         try:
             # Set bounds is important for success fitting!
             bounds = (
             [0, 0, 0,  0],    # lower bounds
-            [np.inf, np.inf, 10, 10]  # upper bounds
-)
+            ub)  # upper bounds
+            #[np.inf, np.inf, 10, 10, 10]
             popt, _ = curve_fit(fit_function, time, fluorescence, p0=initial_guess, maxfev=10000, bounds=bounds)
             F_fit = fit_function(time, *popt)
 

@@ -50,11 +50,7 @@ Natural log calculations were included following the fluorescence data for manua
 The modeling results are stored in separate folder, which the folder name indicate the dataset used and the creation time. e.g. 0.16_mM_DOPC_20250409-17:55
 
 ## Requirements for libraries
-- numpy
-- scipy
-- pandas
-- matplotlib
-- scikit-learn
+See the 'requirements.txt' file.
 
 
 ## Citation

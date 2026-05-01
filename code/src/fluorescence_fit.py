@@ -252,7 +252,7 @@ def analyze_fluorescence_decay_no_triton(data, filename, os_system='Mac'):
         # Update bounds based on F0
         lb = [0, 0, 1e-10, 1e-10, 1e-10]
         ub = [F0_guess, F0_guess, 10.0, 10.0, 10.0]
-        p0 = [F0_guess, F0_guess, 0.001, 0.001]
+        p0 = [F0_guess, F0_guess, 0.01, 0.001, 0.001]
 
         try:
             popt, _ = curve_fit(F_total, t, F, p0=p0, bounds=(lb, ub), maxfev=50000)
